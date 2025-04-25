@@ -26,13 +26,13 @@ class RedisClient {
     return this.isClientConnected;
   }
 
-  // async get(key) {
-  //   if (!this.isClientConnected) {
-  //     await this.isAlive();
-  //   }
-  //
-  //   return this.client.get(key);
-  // }
+  async get(key) {
+    if (!this.isClientConnected) {
+      await this.isAlive();
+    }
+
+    return this.client.get(key);
+  }
 }
 
 // create and export an instance of RedisClient
