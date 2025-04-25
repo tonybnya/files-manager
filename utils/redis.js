@@ -31,7 +31,7 @@ class RedisClient {
       await this.isAlive();
     }
 
-    return this.client.get(key);
+    return await this.client.get(key);
   }
 }
 
