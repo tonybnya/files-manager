@@ -48,6 +48,15 @@ class RedisClient {
       await this.client.expire(key, duration);
     }
   }
+
+  // function to remove a value in Redis by its key
+  async del(key) {
+    if (!this.isClientConnected) {
+      await this.isAlive();
+    }
+
+    await this.client.del(key);
+  }
 }
 
 // create and export an instance of RedisClient
