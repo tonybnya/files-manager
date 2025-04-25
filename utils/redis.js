@@ -60,5 +60,5 @@ class RedisClient {
 }
 
 // create and export an instance of RedisClient
-const redisClient = RedisClient();
+const redisClient = new RedisClient();
 export { redisClient };
