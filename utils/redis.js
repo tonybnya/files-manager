@@ -18,12 +18,21 @@ class RedisClient {
         await this.client.connect();
         this.isClientConnected = true;
         console.log("Redis client connected.");
-        return this.isClientConnected;
       } catch (err) {
         console.log("Redis connection error:", err);
+        return false;
       }
     }
+    return this.isClientConnected;
   }
+
+  // async get(key) {
+  //   if (!this.isClientConnected) {
+  //     await this.isAlive();
+  //   }
+  //
+  //   return this.client.get(key);
+  // }
 }
 
 // create and export an instance of RedisClient
