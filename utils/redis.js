@@ -12,6 +12,7 @@ class RedisClient {
     this.isAlive();
   }
 
+  // function to check the connection to Redis
   async isAlive() {
     if (!this.isClientConnected) {
       try {
@@ -26,12 +27,26 @@ class RedisClient {
     return this.isClientConnected;
   }
 
+  // function to get a value stored by its key
   async get(key) {
     if (!this.isClientConnected) {
       await this.isAlive();
     }
 
     return await this.client.get(key);
+  }
+
+  // function to store a key/value pair with an expiration
+  async set(key, value, duration) {
+    if (!this.isClientConnected) {
+      await this.isAlive();
+    }
+
+    await this.client.set(key, value);
+
+    if (duration) {
+      await this.client.expire(key, duration);
+    }
   }
 }
 
