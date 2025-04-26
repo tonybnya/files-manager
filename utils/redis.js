@@ -5,60 +5,39 @@ class RedisClient {
   // contructor to create client to Redis
   constructor() {
     this.client = createClient();
-    this.client.on("error", (err) => console.log("Redis client error", err));
-    this.isClientConnected = false;
-
-    // check connection to Redis
-    this.isAlive();
+    // display any error in the console
+    this.client.on("error", (err) => console.error("Redis Client Error", err));
+    // connect at startup
+    this.client.connect();
   }
 
-  // function to check the connection to Redis
-  async isAlive() {
-    if (!this.isClientConnected) {
-      try {
-        await this.client.connect();
-        this.isClientConnected = true;
-        console.log("Redis client connected.");
-      } catch (err) {
-        console.log("Redis connection error:", err);
-        return false;
-      }
-    }
-    return this.isClientConnected;
+  // function to check the status of the connection to Redis
+  isAlive() {
+    return this.client.isOpen;
   }
 
-  // function to get a value stored by its key
+  // asynchronous function that takes a string key as argument
+  // and returns the Redis value stored for this key
   async get(key) {
-    if (!this.isClientConnected) {
-      await this.isAlive();
-    }
-
     return await this.client.get(key);
   }
 
-  // function to store a key/value pair with an expiration
+  // asynchronous function that takes a string key,
+  // a value and a duration in second as arguments to store it in Redis
+  // (with an expiration set by the duration argument)
   async set(key, value, duration) {
-    if (!this.isClientConnected) {
-      await this.isAlive();
-    }
-
-    await this.client.set(key, value);
-
-    if (duration) {
-      await this.client.expire(key, duration);
-    }
+    await this.client.set(key, value, {
+      EX: duration,
+    });
   }
 
-  // function to remove a value in Redis by its key
+  // asynchronous function that takes a string key as argument
+  // and remove the value in Redis for this key
   async del(key) {
-    if (!this.isClientConnected) {
-      await this.isAlive();
-    }
-
     await this.client.del(key);
   }
 }
 
 // create and export an instance of RedisClient
 const redisClient = new RedisClient();
-export { redisClient };
+export default redisClient;
