@@ -38,7 +38,13 @@ class DBClient {
 
   // function to check the status of the connection to MongoDB
   isAlive() {
-    return this.client.isConnected();
+    // return this.client.isConnected();
+    try {
+      this.client.db("admin").command({ ping: 1 });
+      return true;
+    } catch (error) {
+      return false;
+    }
   }
 
   // asynchronous function nbUsers that returns
