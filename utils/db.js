@@ -35,6 +35,11 @@ class DBClient {
         console.log(err);
       });
   }
+
+  // function to check the status of the connection to MongoDB
+  isAlive() {
+    return this.client.isConnected();
+  }
 }
 
 // create and export an instance of DBClient
