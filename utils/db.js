@@ -49,6 +49,15 @@ class DBClient {
     // count and return the number of documents
     return await users.countDocuments();
   }
+
+  // asynchronous function nbFiles that returns
+  // the number of documents in the collection files
+  async nbFiles() {
+    // get the collection files
+    const files = this.db.collection("files");
+    // count and return the number of files
+    return await files.countDocuments();
+  }
 }
 
 // create and export an instance of DBClient
