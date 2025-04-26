@@ -20,7 +20,8 @@ logs
 *.log
 
 *.txt
-main*
+
+tests/
 
 # Coverage directory used by tools like istanbul
 coverage
