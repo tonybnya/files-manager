@@ -40,6 +40,15 @@ class DBClient {
   isAlive() {
     return this.client.isConnected();
   }
+
+  // asynchronous function nbUsers that returns
+  // the number of documents in the collection users
+  async nbUsers() {
+    // get the collection users
+    const users = this.db.collection("users");
+    // count and return the number of documents
+    return await users.countDocuments();
+  }
 }
 
 // create and export an instance of DBClient
