@@ -1,3 +1,8 @@
+/**
+ *
+ * Redis utils
+ *
+ */
 import { createClient } from "redis";
 
 // class RedisClient
