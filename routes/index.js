@@ -5,8 +5,9 @@
  */
 
 import Router from "express";
-import AuthController from "../controllers/AuthController.js";
 import AppController from "../controllers/AppController.js";
+import AuthController from "../controllers/AuthController.js";
+import FilesController from "../controllers/FilesController.js";
 import UsersController from "../controllers/UsersController.js";
 
 // define a router
@@ -30,5 +31,9 @@ router.get("/connect", AuthController.getConnect);
 router.get("/disconnect", AuthController.getDisconnect);
 // GET /users/me => UserController.getMe
 router.get("/users/me", UsersController.getMe);
+
+// endpoints for files
+// POST /files => FilesController.postUpload
+router.post("/files", FilesController.postUpload);
 
 export default router;

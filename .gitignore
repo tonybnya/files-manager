@@ -22,6 +22,10 @@ logs
 *.txt
 main*
 tests/
+*.jpeg
+*.jpg
+*.png
+*.py
 
 # Coverage directory used by tools like istanbul
 coverage

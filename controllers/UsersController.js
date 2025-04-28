@@ -8,7 +8,7 @@ import bcrypt from "bcryptjs";
 import Queue from "bull";
 import dbClient from "../utils/db";
 import redisClient from "../utils/redis";
-import { ObjectId } from "bson";
+import { ObjectId } from "mongodb";
 
 // create a new queue and connect it to local Redis server
 const userQueue = new Queue("userQueue", "redis://127.0.0.1:6379");
@@ -89,7 +89,7 @@ class UsersController {
       // if the user is not found in MongoDB (something went wrong)
       return res.status(401).json({ error: "Unauthorized" });
     } catch (error) {
-      console.error("Error in getMe:", error);
+      console.error("Error retrieving the user:", error);
       return res.status(500).json({ error: "Internal server error" });
     }
   }
