@@ -7,6 +7,8 @@
 import bcrypt from "bcryptjs";
 import Queue from "bull";
 import dbClient from "../utils/db";
+import redisClient from "../utils/redis";
+import { ObjectId } from "bson";
 
 // create a new queue and connect it to local Redis server
 const userQueue = new Queue("userQueue", "redis://127.0.0.1:6379");
@@ -53,6 +55,41 @@ class UsersController {
       return res.status(201).json({ id: result.insertedId, email });
     } catch (error) {
       console.error("Error in postNew:", error);
+      return res.status(500).json({ error: "Internal server error" });
+    }
+  }
+
+  static async getMe(req, res) {
+    try {
+      const token = req.header("X-Token");
+
+      // if no token is provided, return Unauthorized immediately
+      if (!token) {
+        return res.status(401).json({ error: "Unauthorized" });
+      }
+
+      const key = `auth_${token}`;
+      const userId = await redisClient.get(key);
+
+      // if token does not exist in Redis (or has expired), return Unauthorized
+      if (!userId) {
+        return res.status(401).json({ error: "Unauthorized" });
+      }
+
+      // token exists, so let's fetch the user info from MongoDB
+      const users = dbClient.db.collection("users");
+      const idObject = new ObjectId(userId);
+      const user = await users.findOne({ _id: idObject });
+
+      // if the user is found, return user details
+      if (user) {
+        return res.status(200).json({ id: userId, email: user.email });
+      }
+
+      // if the user is not found in MongoDB (something went wrong)
+      return res.status(401).json({ error: "Unauthorized" });
+    } catch (error) {
+      console.error("Error in getMe:", error);
       return res.status(500).json({ error: "Internal server error" });
     }
   }
