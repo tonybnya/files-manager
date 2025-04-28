@@ -19,13 +19,15 @@ bower_components/
 logs
 *.log
 
+# Temporary files
 *.txt
-main*
 tests/
+main*
 *.jpeg
 *.jpg
 *.png
 *.py
+query_files.js
 
 # Coverage directory used by tools like istanbul
 coverage
